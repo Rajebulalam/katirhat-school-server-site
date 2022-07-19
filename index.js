@@ -19,8 +19,28 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
-        const collection = client.db("test").collection("devices");
+        const studentsCollection = client.db("production").collection("students");
 
+        // Set & Update User
+        app.put('/students/:studentId', async (req, res) => {
+            const student = req.params.studentId;
+            const user = req.body;
+            const filter = { student: student };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: user,
+            };
+            const result = await studentsCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+
+        // Load User by User Email
+        app.get('/students', async (req, res) => {
+            const student = req.query.student;
+            const query = { student: student };
+            const result = await studentsCollection.find(query).toArray();
+            res.send(result);
+        });
 
     } finally {
         // await client.close();
