@@ -21,6 +21,7 @@ async function run() {
         await client.connect();
         const studentsCollection = client.db("production").collection("students");
         const studentsBlogsCollection = client.db("production").collection("studentsBlogs");
+        const studentsProblemsCollection = client.db("production").collection("problems");
 
         // Set & Update User
         app.put('/students/:studentId', async (req, res) => {
@@ -43,9 +44,15 @@ async function run() {
             res.send(result);
         });
 
-        // All Ordered Load from DB
+        // All Students Blogs from DB
         app.get('/studentsBlogs', async (req, res) => {
             const result = await studentsBlogsCollection.find().toArray();
+            res.send(result);
+        });
+
+        // All Students Problems from DB
+        app.get('/studentsProblems', async (req, res) => {
+            const result = await studentsProblemsCollection.find().toArray();
             res.send(result);
         });
 
