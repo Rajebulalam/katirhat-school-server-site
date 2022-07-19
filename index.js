@@ -20,6 +20,7 @@ async function run() {
     try {
         await client.connect();
         const studentsCollection = client.db("production").collection("students");
+        const studentsBlogsCollection = client.db("production").collection("studentsBlogs");
 
         // Set & Update User
         app.put('/students/:studentId', async (req, res) => {
@@ -39,6 +40,12 @@ async function run() {
             const student = req.query.student;
             const query = { student: student };
             const result = await studentsCollection.find(query).toArray();
+            res.send(result);
+        });
+
+        // All Ordered Load from DB
+        app.get('/studentsBlogs', async (req, res) => {
+            const result = await studentsBlogsCollection.find().toArray();
             res.send(result);
         });
 
