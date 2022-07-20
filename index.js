@@ -23,6 +23,7 @@ async function run() {
         const studentsBlogsCollection = client.db("production").collection("studentsBlogs");
         const studentsProblemsCollection = client.db("production").collection("problems");
         const studentNoticeCollection = client.db("production").collection("studentNotice");
+        const studentSuggestionCollection = client.db("production").collection("suggestions");
 
         // Set & Update User
         app.put('/students/:studentId', async (req, res) => {
@@ -74,6 +75,12 @@ async function run() {
         // All Students Notice from DB
         app.get('/studentNotice', async (req, res) => {
             const result = await studentNoticeCollection.find().toArray();
+            res.send(result);
+        });
+
+        // All Students Suggestions from DB
+        app.get('/studentSuggestion', async (req, res) => {
+            const result = await studentSuggestionCollection.find().toArray();
             res.send(result);
         });
 
