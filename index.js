@@ -50,11 +50,26 @@ async function run() {
             res.send(result);
         });
 
+        // Post Blog On Data Base
+        app.post('/studentsBlogs', async (req, res) => {
+            const body = req.body;
+            const result = await studentsBlogsCollection.insertOne(body);
+            res.send(result);
+        });
+
         // All Students Problems from DB
         app.get('/studentsProblems', async (req, res) => {
             const result = await studentsProblemsCollection.find().toArray();
             res.send(result);
         });
+
+        // Post Problems On Data Base
+        app.post('/studentsProblems', async (req, res) => {
+            const body = req.body;
+            const result = await studentsProblemsCollection.insertOne(body);
+            res.send(result);
+        });
+
 
     } finally {
         // await client.close();
