@@ -54,7 +54,7 @@ async function run() {
             res.send(result);
         });
 
-        // Post Blog On Data Base
+        // Post Blog On DB
         app.post('/students', async (req, res) => {
             const body = req.body;
             const result = await studentsCollection.insertOne(body);
@@ -67,7 +67,7 @@ async function run() {
             res.send(result);
         });
 
-        // Post Blog On Data Base
+        // Post Blog On DB
         app.post('/studentsBlogs', async (req, res) => {
             const body = req.body;
             const result = await studentsBlogsCollection.insertOne(body);
@@ -113,7 +113,7 @@ async function run() {
             res.send(result);
         });
 
-        // Set & Update Teacher
+        // Set & Update Teachers
         app.put('/teachers/:teacherId', async (req, res) => {
             const teacher = req.params.teacherId;
             const user = req.body;
@@ -126,7 +126,7 @@ async function run() {
             res.send(result);
         });
 
-        // Load Teacher by Teacher ID
+        // Load Teachers by Teacher ID
         app.get('/teachers', async (req, res) => {
             const teacher = req.query.teacher;
             const query = { teacher: teacher };
@@ -134,9 +134,16 @@ async function run() {
             res.send(result);
         });
 
-        // All Teacher Load
+        // All Teachers Load
         app.get('/allTeachers', async (req, res) => {
             const result = await teachersCollection.find().toArray();
+            res.send(result);
+        });
+
+        // Post Admin On DB
+        app.post('/addTeachers', async (req, res) => {
+            const body = req.body;
+            const result = await teachersCollection.insertOne(body);
             res.send(result);
         });
 
