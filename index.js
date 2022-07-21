@@ -79,6 +79,13 @@ async function run() {
             res.send(result);
         });
 
+        // Post Notice On Data Base
+        app.post('/studentNotice', async (req, res) => {
+            const body = req.body;
+            const result = await studentNoticeCollection.insertOne(body);
+            res.send(result);
+        });
+
         // All Students Suggestions from DB
         app.get('/studentSuggestion', async (req, res) => {
             const result = await studentSuggestionCollection.find().toArray();
