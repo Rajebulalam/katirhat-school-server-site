@@ -24,8 +24,9 @@ async function run() {
         const studentsProblemsCollection = client.db("production").collection("problems");
         const studentNoticeCollection = client.db("production").collection("studentNotice");
         const studentSuggestionCollection = client.db("production").collection("suggestions");
+        const studentTeachersCollection = client.db("production").collection("teachers");
 
-        // Set & Update User
+        // Set & Update Student
         app.put('/students/:studentId', async (req, res) => {
             const student = req.params.studentId;
             const user = req.body;
@@ -38,7 +39,7 @@ async function run() {
             res.send(result);
         });
 
-        // Load User by User Email
+        // Load Student by Student ID
         app.get('/students', async (req, res) => {
             const student = req.query.student;
             const query = { student: student };
@@ -84,6 +85,26 @@ async function run() {
             res.send(result);
         });
 
+        // Set & Update Teacher
+        app.put('/teachers/:teacherId', async (req, res) => {
+            const teacher = req.params.teacherId;
+            const user = req.body;
+            const filter = { teacher: teacher };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: user,
+            };
+            const result = await studentTeachersCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+
+        // Load Teacher by Teacher ID
+        app.get('/teachers', async (req, res) => {
+            const teacher = req.query.teacher;
+            const query = { teacher: teacher };
+            const result = await studentTeachersCollection.find(query).toArray();
+            res.send(result);
+        });
 
     } finally {
         // await client.close();
