@@ -53,6 +53,13 @@ async function run() {
             res.send(result);
         });
 
+        // Post Blog On Data Base
+        app.post('/students', async (req, res) => {
+            const body = req.body;
+            const result = await studentsCollection.insertOne(body);
+            res.send(result);
+        });
+
         // All Students Blogs from DB
         app.get('/studentsBlogs', async (req, res) => {
             const result = await studentsBlogsCollection.find().toArray();
