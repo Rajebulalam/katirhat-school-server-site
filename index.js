@@ -47,6 +47,12 @@ async function run() {
             res.send(result);
         });
 
+        // All Students Loaded from DB
+        app.get('/allStudents', async (req, res) => {
+            const result = await studentsCollection.find().toArray();
+            res.send(result);
+        });
+
         // All Students Blogs from DB
         app.get('/studentsBlogs', async (req, res) => {
             const result = await studentsBlogsCollection.find().toArray();
