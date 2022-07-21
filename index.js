@@ -79,7 +79,7 @@ async function run() {
             res.send(result);
         });
 
-        // Post Notice On Data Base
+        // Post Notice On DB
         app.post('/studentNotice', async (req, res) => {
             const body = req.body;
             const result = await studentNoticeCollection.insertOne(body);
@@ -89,6 +89,13 @@ async function run() {
         // All Students Suggestions from DB
         app.get('/studentSuggestion', async (req, res) => {
             const result = await studentSuggestionCollection.find().toArray();
+            res.send(result);
+        });
+
+        // Post Suggestion On DB
+        app.post('/studentSuggestion', async (req, res) => {
+            const body = req.body;
+            const result = await studentSuggestionCollection.insertOne(body);
             res.send(result);
         });
 
