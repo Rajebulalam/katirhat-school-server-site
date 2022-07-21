@@ -24,7 +24,8 @@ async function run() {
         const studentsProblemsCollection = client.db("production").collection("problems");
         const studentNoticeCollection = client.db("production").collection("studentNotice");
         const studentSuggestionCollection = client.db("production").collection("suggestions");
-        const studentTeachersCollection = client.db("production").collection("teachers");
+        const teachersCollection = client.db("production").collection("teachers");
+        const aminCollection = client.db("production").collection("admin");
 
         // Set & Update Student
         app.put('/students/:studentId', async (req, res) => {
@@ -121,7 +122,7 @@ async function run() {
             const updatedDoc = {
                 $set: user,
             };
-            const result = await studentTeachersCollection.updateOne(filter, updatedDoc, options);
+            const result = await teachersCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
         });
 
@@ -129,7 +130,19 @@ async function run() {
         app.get('/teachers', async (req, res) => {
             const teacher = req.query.teacher;
             const query = { teacher: teacher };
-            const result = await studentTeachersCollection.find(query).toArray();
+            const result = await teachersCollection.find(query).toArray();
+            res.send(result);
+        });
+
+        // All Teacher Load
+        app.get('/allTeachers', async (req, res) => {
+            const result = await teachersCollection.find().toArray();
+            res.send(result);
+        });
+
+        // Amin Loaded from DB
+        app.get('/admin', async (req, res) => {
+            const result = await aminCollection.find().toArray();
             res.send(result);
         });
 
