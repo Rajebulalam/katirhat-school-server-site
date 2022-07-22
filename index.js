@@ -48,7 +48,7 @@ async function run() {
             res.send(result);
         });
 
-        // All Students Loaded from DB
+        // All Students Load from DB
         app.get('/allStudents', async (req, res) => {
             const result = await studentsCollection.find().toArray();
             res.send(result);
@@ -61,7 +61,7 @@ async function run() {
             res.send(result);
         });
 
-        // All Students Blogs from DB
+        // All Students Blogs Load from DB
         app.get('/studentsBlogs', async (req, res) => {
             const result = await studentsBlogsCollection.find().toArray();
             res.send(result);
@@ -74,7 +74,7 @@ async function run() {
             res.send(result);
         });
 
-        // All Students Problems from DB
+        // All Students Problems Load from DB
         app.get('/studentsProblems', async (req, res) => {
             const result = await studentsProblemsCollection.find().toArray();
             res.send(result);
@@ -87,7 +87,7 @@ async function run() {
             res.send(result);
         });
 
-        // All Students Notice from DB
+        // All Students Notice Load from DB
         app.get('/studentNotice', async (req, res) => {
             const result = await studentNoticeCollection.find().toArray();
             res.send(result);
@@ -100,7 +100,7 @@ async function run() {
             res.send(result);
         });
 
-        // All Students Suggestions from DB
+        // All Students Suggestions Load from DB
         app.get('/studentSuggestion', async (req, res) => {
             const result = await studentSuggestionCollection.find().toArray();
             res.send(result);
