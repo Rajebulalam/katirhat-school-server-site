@@ -25,7 +25,7 @@ async function run() {
         const studentNoticeCollection = client.db("production").collection("studentNotice");
         const studentSuggestionCollection = client.db("production").collection("suggestions");
         const teachersCollection = client.db("production").collection("teachers");
-        const aminCollection = client.db("production").collection("admin");
+        const adminCollection = client.db("production").collection("admin");
 
         // Set & Update Student
         app.put('/students/:studentId', async (req, res) => {
@@ -48,7 +48,7 @@ async function run() {
             res.send(result);
         });
 
-        // All Students Load from DB
+        // All Students Load from DB for login purpose
         app.get('/allStudents', async (req, res) => {
             const result = await studentsCollection.find().toArray();
             res.send(result);
@@ -134,22 +134,50 @@ async function run() {
             res.send(result);
         });
 
-        // All Teachers Load
+        // All Teachers Load from DB for login purpose
         app.get('/allTeachers', async (req, res) => {
             const result = await teachersCollection.find().toArray();
             res.send(result);
         });
 
-        // Post Admin On DB
+        // Post Teacher On DB
         app.post('/addTeachers', async (req, res) => {
             const body = req.body;
             const result = await teachersCollection.insertOne(body);
             res.send(result);
         });
 
-        // Amin Loaded from DB
+        // Admin Loaded from DB for Login Purpose
         app.get('/admin', async (req, res) => {
-            const result = await aminCollection.find().toArray();
+            const result = await adminCollection.find().toArray();
+            res.send(result);
+        });
+
+        // Load Admins by Admin ID
+        app.get('/admins', async (req, res) => {
+            const admin = req.query.admin;
+            const query = { admin: admin };
+            const result = await adminCollection.find(query).toArray();
+            res.send(result);
+        });
+
+        // Admin Added On DB
+        app.post('/addAdmins', async (req, res) => {
+            const body = req.body;
+            const result = await adminCollection.insertOne(body);
+            res.send(result);
+        });
+
+        // Set & Update Teachers
+        app.put('/admins/:adminId', async (req, res) => {
+            const admin = req.params.adminId;
+            const user = req.body;
+            const filter = { admin: admin };
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: user,
+            };
+            const result = await adminCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
         });
 
