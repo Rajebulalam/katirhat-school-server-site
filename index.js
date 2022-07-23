@@ -27,6 +27,7 @@ async function run() {
         const teachersCollection = client.db("production").collection("teachers");
         const adminCollection = client.db("production").collection("admin"); 
         const generalNoticeCollection = client.db("production").collection("notices"); 
+        const eventCollection = client.db("production").collection("events"); 
 
         // Set & Update Student
         app.put('/students/:studentId', async (req, res) => {
@@ -192,6 +193,19 @@ async function run() {
         app.post('/addNotice', async (req, res) => {
             const body = req.body;
             const result = await generalNoticeCollection.insertOne(body);
+            res.send(result);
+        });
+
+        // Event Load from DB
+        app.get('/events', async (req, res) => {
+            const result = await eventCollection.find().toArray();
+            res.send(result);
+        });
+
+        // Event Add On DB
+        app.post('/addEvent', async (req, res) => {
+            const body = req.body;
+            const result = await eventCollection.insertOne(body);
             res.send(result);
         });
 
