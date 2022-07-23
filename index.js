@@ -182,9 +182,16 @@ async function run() {
             res.send(result);
         });
 
-        // Notice Loaded from DB
+        // Notice Load from DB
         app.get('/notices', async (req, res) => {
             const result = await generalNoticeCollection.find().toArray();
+            res.send(result);
+        });
+
+        // Notice Add On DB
+        app.post('/addNotice', async (req, res) => {
+            const body = req.body;
+            const result = await generalNoticeCollection.insertOne(body);
             res.send(result);
         });
 
