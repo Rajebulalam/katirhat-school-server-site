@@ -25,7 +25,8 @@ async function run() {
         const studentNoticeCollection = client.db("production").collection("studentNotice");
         const studentSuggestionCollection = client.db("production").collection("suggestions");
         const teachersCollection = client.db("production").collection("teachers");
-        const adminCollection = client.db("production").collection("admin");
+        const adminCollection = client.db("production").collection("admin"); 
+        const generalNoticeCollection = client.db("production").collection("notices"); 
 
         // Set & Update Student
         app.put('/students/:studentId', async (req, res) => {
@@ -178,6 +179,12 @@ async function run() {
                 $set: user,
             };
             const result = await adminCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+        });
+
+        // Notice Loaded from DB
+        app.get('/notices', async (req, res) => {
+            const result = await generalNoticeCollection.find().toArray();
             res.send(result);
         });
 
