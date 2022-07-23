@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, CURSOR_FLAGS } = require('mongodb');
 const port = process.env.PORT || 5000;
 
 app.use(cors());
@@ -25,9 +25,9 @@ async function run() {
         const studentNoticeCollection = client.db("production").collection("studentNotice");
         const studentSuggestionCollection = client.db("production").collection("suggestions");
         const teachersCollection = client.db("production").collection("teachers");
-        const adminCollection = client.db("production").collection("admin"); 
-        const generalNoticeCollection = client.db("production").collection("notices"); 
-        const eventCollection = client.db("production").collection("events"); 
+        const adminCollection = client.db("production").collection("admin");
+        const generalNoticeCollection = client.db("production").collection("notices");
+        const eventCollection = client.db("production").collection("events");
 
         // Set & Update Student
         app.put('/students/:studentId', async (req, res) => {
@@ -198,7 +198,15 @@ async function run() {
 
         // Event Load from DB
         app.get('/events', async (req, res) => {
-            const result = await eventCollection.find().toArray();
+            console.log(req.query);
+            const page = parseInt(req.query.page);
+            const size = parseInt(req.query.size);
+            const query = {};
+            const cursor = eventCollection.find(query);
+            let result;
+            if (page || size) {
+                result = await cursor.skip(page * size).limit(size).toArray();
+            }
             res.send(result);
         });
 
@@ -207,6 +215,12 @@ async function run() {
             const body = req.body;
             const result = await eventCollection.insertOne(body);
             res.send(result);
+        });
+
+        // Events Count
+        app.get('/eventsCount', async (req, res) => {
+            const count = await eventCollection.estimatedDocumentCount();
+            res.send({ count });
         });
 
     } finally {
